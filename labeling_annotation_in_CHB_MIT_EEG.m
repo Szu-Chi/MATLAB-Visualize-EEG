@@ -29,15 +29,15 @@ function [data info] = labeling_annotation_in_CHB_MIT_EEG(file_path,file_name)
     hdr.StartTime = info.StartTime;
     hdr.TransducerTypes = info.TransducerTypes;
     
+    if ~exist(file_path+"onset_labeled\", 'dir')
+        mkdir(file_path+"onset_labeled\")
+    end
     if isfile(file_path+file_name+".seizures")
         [beginning_of_seizure, end_of_seizure] = get_seizure_period( file_path+file_name+".seizures" ); 
         Onset = seconds(beginning_of_seizure');
         Annotations = repelem("seizure",size(beginning_of_seizure,2))';
         Duration = seconds(end_of_seizure - beginning_of_seizure)';
         tsal = timetable(Onset,Annotations,Duration);
-        if ~exist(file_path+"onset_labeled\", 'dir')
-            mkdir(file_path+"onset_labeled\")
-        end
         edfw = edfwrite(file_path+"onset_labeled\"+"onset_labeled_"+file_name,hdr,EEG',tsal);
     else
         edfw = edfwrite(file_path+"onset_labeled\"+"onset_labeled_"+file_name,hdr,EEG');;
