@@ -21,8 +21,8 @@ function [EEG, signal_labels, record_time, seizure_time] = get_CHB_MIT_EEG(file_
     if isfile(file_name+".seizures")
         [beginning_of_seizure, end_of_seizure] = get_seizure_period( file_name+".seizures" );
     else
-        beginning_of_seizure = [];
-        end_of_seizure = [];
+        seizure_time = [];
+        return;
     end
 
     for i = 1:size(beginning_of_seizure,2)
