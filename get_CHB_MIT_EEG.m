@@ -12,11 +12,7 @@ function [EEG, signal_labels, record_time, seizure_time] = get_CHB_MIT_EEG(file_
     fs = info.NumSamples/seconds( info.DataRecordDuration);
     
     record_time = start_time+ (0:duration(milliseconds(1e3/fs(1))):seconds(size(data,1))-duration(milliseconds(1e3/fs(1))));
-    EEG=[];
-    for i =1:size(info.SignalLabels,1)
-        EEG = [EEG ;cell2mat(data{:,i})'];
-    end
-
+    EEG = cell2mat(data{:,:})';
     
     if isfile(file_name+".seizures")
         [beginning_of_seizure, end_of_seizure] = get_seizure_period( file_name+".seizures" );
